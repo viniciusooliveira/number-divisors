@@ -6,11 +6,12 @@ namespace Domain.Contracts.Business
 {
     public interface INumberBusiness
     {
-        IList<Factor> ListFactors(long n);
 
         IEnumerable<Factor> ListFactorsAsEnumerable(long n);
 
         IAsyncEnumerable<Factor> ListFactorsAsAsyncEnumerable(long n);
+
+        bool IsPrime(long n);
 
     }
 }

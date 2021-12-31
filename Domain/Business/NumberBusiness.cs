@@ -18,24 +18,6 @@ namespace Domain.Business
             _redis = redis;
         }
         
-        public IList<Factor> ListFactors (long n)
-        {
-            var factors = new List<Factor>
-            {
-                new(1, true), 
-                new(n, IsPrime(n))
-            };
-
-            for (long i = 2; i <= Math.Sqrt(n); i++)
-            {
-                if (n % i != 0) continue;
-                factors.Add(new Factor(i, IsPrime(i)));
-                factors.Add(new Factor(n/i, IsPrime(n/i)));
-            }
-
-            return factors;
-        }
-        
         public IEnumerable<Factor> ListFactorsAsEnumerable(long n)
         {
             yield return new Factor(1, true);
@@ -59,9 +41,6 @@ namespace Domain.Business
             }
         }
 
-        // public IAsyncEnumerable<Factor> ListFactorsAsAsyncEnumerable(long n) =>
-        //     ListFactorsAsEnumerable(n).ToAsyncEnumerable();
-        
         public async IAsyncEnumerable<Factor> ListFactorsAsAsyncEnumerable(long n)
         {
             IAsyncEnumerable<Factor> enumerable;
@@ -81,7 +60,7 @@ namespace Domain.Business
             }
         }
 
-        private bool IsPrime(long n)
+        public bool IsPrime(long n)
         {
             if (n < 1) return false;
             if (n <= 2) return true;
