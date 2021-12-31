@@ -29,20 +29,25 @@ class App extends React.Component<{}, {
 
     this.setState({...this.state, factors: "", primes: ""});
 
-    getFactors.getFactors(parseInt(this.state.number), (factor: Factor) => {
+    try{
+      getFactors.getFactors(parseInt(this.state.number), (factor: Factor) => {
 
-      if(factor.number === 1){
-        this.setState({...this.state,
-          factors: factor.number.toString(),
-          primes: factor.number.toString()})
-      }else{
-        this.setState({...this.state, factors: `${this.state.factors}, ${factor.number}`});
+        if(factor.number === 1){
+          this.setState({...this.state,
+            factors: factor.number.toString(),
+            primes: factor.number.toString()})
+        }else{
+          this.setState({...this.state, factors: `${this.state.factors}, ${factor.number}`});
 
-        if(factor.isPrime){
-          this.setState({...this.state, primes: `${this.state.primes}, ${factor.number}`});
+          if(factor.isPrime){
+            this.setState({...this.state, primes: `${this.state.primes}, ${factor.number}`});
+          }
         }
-      }
-    });
+      });
+    }catch (e) {
+      alert("Erro ao calcular divisores.")
+    }
+    
   }
 
   validate(): boolean{
