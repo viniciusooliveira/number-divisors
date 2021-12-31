@@ -1,0 +1,36 @@
+version: "2"
+services:
+  haproxy:
+    image: eeacms/haproxy
+    depends_on:
+      - webapi
+      - frontend
+    ports:
+      - "5000:5000"
+      - "1936:1936"
+    environment:
+      BACKENDS: "webapi"
+      DNS_ENABLED: "true"
+      LOG_LEVEL: "info"
+      DNS_TTL: 1
+      
+  keydb:
+    image: eqalpha/keydb
+    ports:
+      - "16379:6379"
+
+  webapi:
+    build:
+      context: .
+      dockerfile: WebApi/Dockerfile
+    depends_on:
+      - keydb
+  
+  frontend:
+    ports:
+      - "80:80"
+    build:
+      context: ./Front
+      dockerfile: Dockerfile
+    depends_on:
+      - webapi
